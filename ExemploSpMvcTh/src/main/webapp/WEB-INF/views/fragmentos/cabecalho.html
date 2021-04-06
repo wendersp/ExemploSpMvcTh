@@ -2,8 +2,10 @@
     <div class="container" th:fragment="cabecalho">
         <nav class="navbar navbar-inverse">
             <div class="navbar-form navbar-left">
-                <a class="btn btn-secondary" th:href="@{/usuario/listarTodos}">Home</a>
+                <a class="btn btn-secondary" th:href="@{/usuario/listar}">Listar Usuarios</a>
                 <a class="btn btn-secondary" th:href="@{/usuario/novo}">Novo Usuário</a>
+                <a class="btn btn-secondary" th:href="@{/estado/listar}">Listar Estados</a>
+                <a class="btn btn-secondary" th:href="@{/estado/novo}">Novo Estado</a>
             </div>
         </nav>
     </div>
