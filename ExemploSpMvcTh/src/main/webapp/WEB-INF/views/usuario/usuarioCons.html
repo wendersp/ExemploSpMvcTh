@@ -36,8 +36,7 @@
                     <tr>
                         <th>ID</th>
                         <th>NOME</th>
-                        <th>SEXO</th>
-                        <th>DATA</th>
+                        <th>SEXO</th>                        
                         <th>E-MAIL</th>
                         <th>AÇÃO</th>
                     </tr>
@@ -45,8 +44,8 @@
                 <tbody>
                     <tr th:each="user : ${usuarios}">
                         <td th:text="${user.id}">1</td>
-                        <td th:text="${user.nome}">Wender da Silva</td>
-                        <td th:text="${#temporals.format(user.dataNascimento, 'dd/MM/yyyy')}">25/02/1979</td>
+                        <td th:text="${user.nome}">Wender da Silva</td>                        
+                        <td th:text="${user.email}">wendersp@gmail.com</td>   
                         <td th:text="${user.sexo.desc}">M</td>
                         <td>
                             <a class="btn btn-info" th:href="@{/usuario/alterar/{id}(id=${user.id})}">Editar</a>

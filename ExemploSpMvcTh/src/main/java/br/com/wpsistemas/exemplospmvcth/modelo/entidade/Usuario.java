@@ -2,7 +2,15 @@
 package br.com.wpsistemas.exemplospmvcth.modelo.entidade;
 
 import br.com.wpsistemas.exemplospmvcth.modelo.uteis.TipoSexo;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
@@ -14,35 +22,35 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  *
  * @author wender
  */
-public class Usuario {
+@Entity
+@Table(name = "usuarios")
+public class Usuario implements Serializable {
     
-    private Long id;
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;    
     @NotBlank 
     @Size(min = 3, max = 50)
+    @Column(name = "nome", length = 100)
     private String nome;    
+    @Column(name = "sexo", length = 1)
     private TipoSexo sexo;
-    @NotNull
-    @DateTimeFormat(iso = ISO.DATE)
-    private LocalDate dataNascimento;
+//    @NotNull
+//    @DateTimeFormat(iso = ISO.DATE)
+//    @Column(name = "data_nascimento")
+//    private LocalDate dataNascimento;
     @NotBlank
     @Email
+    @Column(name = "email", length = 100)
     private String email;
     @Size(min = 6, max = 20)   
+    @Column(name = "senha", length = 20)
     private String senha;
 
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, TipoSexo sexo, LocalDate dataNascimento, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.sexo = sexo;
-        this.dataNascimento = dataNascimento;
-        this.email = email;
-        this.senha = senha;
-    }
-
+    
     public Long getId() {
         return id;
     }
@@ -59,15 +67,7 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    
+      
     public String getEmail() {
         return email;
     }
@@ -91,6 +91,32 @@ public class Usuario {
     public void setSexo(TipoSexo sexo) {
         this.sexo = sexo;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 73 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    
     
     
 }

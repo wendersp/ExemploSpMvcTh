@@ -1,7 +1,7 @@
 package br.com.wpsistemas.exemplospmvcth.controller;
 
-import br.com.wpsistemas.exemplospmvcth.modelo.dao.UsuarioDao;
 import br.com.wpsistemas.exemplospmvcth.modelo.entidade.Usuario;
+import br.com.wpsistemas.exemplospmvcth.modelo.repository.UsuarioRepository;
 import br.com.wpsistemas.exemplospmvcth.modelo.uteis.TipoSexo;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioDao usuarioDao;
+    private UsuarioRepository usuarioRepository;
 
-    @GetMapping(value = "listarTodos")
+    @GetMapping(value = "listar")
     public ModelAndView listaTodos(ModelMap model) {
-        model.addAttribute("usuarios", usuarioDao.listarTodos());
+        model.addAttribute("usuarios", usuarioRepository.findAll());
         model.addAttribute("conteudo", "usuario/usuarioCons");
         return new ModelAndView("layout", model);
     }
@@ -44,34 +44,25 @@ public class UsuarioController {
     public ModelAndView salvar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult result, RedirectAttributes attr) {
         if (result.hasErrors()) {
             return new ModelAndView("layout", "conteudo", "usuario/usuarioFrm");
-        }
-        String msg;
-        if (usuario.getId() == null) {
-            usuario.setId(System.currentTimeMillis());
-            usuarioDao.incluir(usuario);
-            msg = "Usuario salvo com sucesso...";
-        } else {
-            usuarioDao.alterar(usuario);
-            msg = "Usuario alterado com sucesso...";
-        }
-        attr.addFlashAttribute("message", msg);
-        return new ModelAndView("redirect:/usuario/listarTodos");
+        }        
+        usuarioRepository.save(usuario);                    
+        attr.addFlashAttribute("message", "Usuario alterado com sucesso...");
+        return new ModelAndView("redirect:/usuario/listar");
     }
 
     @GetMapping("/alterar/{id}")
     public ModelAndView alterar(@PathVariable("id") Long id, ModelMap model) {
-        Usuario usuario = usuarioDao.pesquisar(id);
+        Usuario usuario = usuarioRepository.findById(id).get();
         model.addAttribute("usuario", usuario);
         model.addAttribute("conteudo", "usuario/usuarioFrm");
         return new ModelAndView("layout", model);
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
-        Usuario usuario = usuarioDao.pesquisar(id);
-        usuarioDao.excluir(usuario);
+    public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {        
+        usuarioRepository.deleteById(id);
         attr.addFlashAttribute("message", "Usuário excluído com sucesso.");
-        return "redirect:/usuario/listarTodos";
+        return "redirect:/usuario/listar";
     }
 
     @ModelAttribute("sexos")
