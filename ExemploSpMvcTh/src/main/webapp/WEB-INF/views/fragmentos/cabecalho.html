@@ -1,0 +1,10 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <div class="container" th:fragment="cabecalho">
+        <nav class="navbar navbar-inverse">
+            <div class="navbar-form navbar-left">
+                <a class="btn btn-secondary" th:href="@{/usuario/listarTodos}">Home</a>
+                <a class="btn btn-secondary" th:href="@{/usuario/novo}">Novo Usuário</a>
+            </div>
+        </nav>
+    </div>
+</html>
