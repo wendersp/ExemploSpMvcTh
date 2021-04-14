@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <div class="container" th:fragment="corpo">
+        <h1 th:text="#{titulo.cidade.cadastro}"></h1>
+        <hr>
+            <div>
+                <form th:action="@{/cidade/salvar}"  th:object="${cidade}" method="post">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="form-group">
+                        <label th:for="nome">Nome: </label>
+                        <input type="text" class="form-control" id="nome" th:field="*{nome}"/>
+                        <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="label label-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="estado">Estado: </label>
+                        <select th:field="*{estado}" class="form-control" id="estado">
+                            <option th:each="estado : ${estados}" th:value="${estado.id}" th:text="${estado.nome}">GOIAS</option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" class="label label-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+</html>

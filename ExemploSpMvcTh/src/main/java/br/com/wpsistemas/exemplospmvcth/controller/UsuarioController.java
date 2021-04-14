@@ -3,6 +3,8 @@ package br.com.wpsistemas.exemplospmvcth.controller;
 import br.com.wpsistemas.exemplospmvcth.modelo.entidade.Usuario;
 import br.com.wpsistemas.exemplospmvcth.modelo.repository.UsuarioRepository;
 import br.com.wpsistemas.exemplospmvcth.modelo.uteis.TipoSexo;
+import java.time.LocalDate;
+import java.time.Month;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,20 @@ public class UsuarioController {
     @GetMapping(value = "listar")
     public ModelAndView listaTodos(ModelMap model) {
         model.addAttribute("usuarios", usuarioRepository.findAll());
+        model.addAttribute("conteudo", "usuario/usuarioCons");
+        return new ModelAndView("layout", model);
+    }
+    
+    @PostMapping(value = "nome")
+    public ModelAndView findByNome(@ModelAttribute("nome") String nome, ModelMap model) {
+        model.addAttribute("usuarios", usuarioRepository.findByNomeStartingWith(nome.toUpperCase()));
+        model.addAttribute("conteudo", "usuario/usuarioCons");
+        return new ModelAndView("layout", model);
+    }
+    
+    @GetMapping(value = "datanascimento")
+    public ModelAndView findByNome(ModelMap model) {
+        model.addAttribute("usuarios", usuarioRepository.findByDataNascimentoBetween(LocalDate.of(2000, Month.JANUARY, 1), LocalDate.of(2000, Month.DECEMBER, 31)));
         model.addAttribute("conteudo", "usuario/usuarioCons");
         return new ModelAndView("layout", model);
     }

@@ -7,8 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -16,8 +19,8 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author wender
  */
 @Entity
-@Table(name = "estados")
-public class Estado implements Serializable {
+@Table(name = "cidades")
+public class Cidade implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -25,12 +28,11 @@ public class Estado implements Serializable {
     private Long id;
     @NotBlank
     @Size(min = 3)
-    @Column(name = "nome", length = 100, nullable = false)
+    @Column(name = "nome", length = 200)
     private String nome;
-    @NotBlank
-    @Size(min = 2, max = 2)
-    @Column(name = "sigla", length = 2, nullable = false, unique = true)
-    private String sigla;
+    @ManyToOne
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
     public Long getId() {
         return id;
@@ -39,7 +41,7 @@ public class Estado implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
     public String getNome() {
         return nome;
     }
@@ -48,15 +50,16 @@ public class Estado implements Serializable {
         this.nome = nome.toUpperCase();
     }
 
-    public String getSigla() {
-        return sigla;
+    public Estado getEstado() {
+        return estado;
     }
 
-    public void setSigla(String sigla) {
-        this.sigla = sigla.toUpperCase();
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
+
     
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -67,10 +70,10 @@ public class Estado implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Estado)) {
+        if (!(object instanceof Cidade)) {
             return false;
         }
-        Estado other = (Estado) object;
+        Cidade other = (Cidade) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -79,8 +82,7 @@ public class Estado implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.wpsistemas.exemplospmvcth.modelo.entidade.Estado[ id=" + id + " ]";
+        return "br.com.wpsistemas.exemplospmvcth.modelo.entidade.Cidade[ id=" + id + " ]";
     }
-
     
 }

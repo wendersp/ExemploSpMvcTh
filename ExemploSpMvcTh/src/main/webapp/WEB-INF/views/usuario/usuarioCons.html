@@ -1,30 +1,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <div class="container" th:fragment="corpo">
         <h1 th:text="#{titulo.usuario.listagem}"></h1>
-        <hr>
-        <nav class="navbar navbar-default"> 
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form class="navbar-form navbar-left" th:action="@{/usuario/sexo}" method="get">
-                        <div class="form-group">
-                            <select name="tipoSexo" class="form-control" >
-                                <option value="">Busca por Sexo</option>
-                                <option th:each="sexo : ${sexos}" th:value="${sexo.desc}" th:text="${sexo.desc}">F</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Localizar</button>
-                    </form>
-
-                    <form class="navbar-form navbar-left" role="search" th:action="@{/usuario/nome}" method="get">
-                        <div class="form-group">
-                            <input name="nome" type="text" class="form-control" placeholder="nome">
-                        </div>
-                        <button type="submit" class="btn btn-default">Localizar</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-
+        <hr/>
+        <div>
+            <form class="navbar-form navbar-left" role="search" th:action="@{/usuario/nome}" method="post">
+                <div class="form-group">                    
+                    <input name="nome" type="text" class="form-control" placeholder="nome">
+                    <button type="submit" class="btn btn-light">Localizar</button>
+                </div>                
+            </form>
+        </div>
+        <hr/>
         <div th:class="${#strings.isEmpty(message)} ? 'panel panel-default' : 'panel panel-success'">
 
             <div class="panel-heading">
@@ -36,7 +22,8 @@
                     <tr>
                         <th>ID</th>
                         <th>NOME</th>
-                        <th>SEXO</th>                        
+                        <th>SEXO</th>   
+                        <th>DATA NASCIMENTO</th>   
                         <th>E-MAIL</th>
                         <th>AÇÃO</th>
                     </tr>
@@ -45,8 +32,9 @@
                     <tr th:each="user : ${usuarios}">
                         <td th:text="${user.id}">1</td>
                         <td th:text="${user.nome}">Wender da Silva</td>                        
-                        <td th:text="${user.email}">wendersp@gmail.com</td>   
                         <td th:text="${user.sexo.desc}">M</td>
+                        <td th:text="${#temporals.format(user.dataNascimento, 'dd/MM/yyyy')}">99/99/9999</td>
+                        <td th:text="${user.email}">wendersp@gmail.com</td>                           
                         <td>
                             <a class="btn btn-info" th:href="@{/usuario/alterar/{id}(id=${user.id})}">Editar</a>
                             <a class="btn btn-danger" th:href="@{/usuario/excluir/{id}(id=${user.id})}" th:text="Deletar">Excluir</a>

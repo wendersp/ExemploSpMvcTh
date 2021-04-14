@@ -16,12 +16,17 @@
                         <option th:each="sexo : ${sexos}" th:value="${sexo.desc}" th:text="${sexo.desc}">F</option>
                     </select>
                 </div>
-               
+               <div class="form-group">
+                    <label th:for="dataNascimento">Data Nasc.: </label>
+                    <input type="date" class="form-control" id="dataNascimento" th:field="*{dataNascimento}"/>
+                    <span th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}" class="label label-danger"></span>
+                </div>
                 <div class="form-group">
                     <label th:for="email">E-mail: </label>
                     <input type="email" class="form-control" id="email" th:field="*{email}"/>
                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="label label-danger"></span>
                 </div>
+                <br/>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Confirmar</button>
                 </div>

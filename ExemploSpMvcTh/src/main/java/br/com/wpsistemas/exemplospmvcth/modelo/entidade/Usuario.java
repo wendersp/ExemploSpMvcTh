@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,6 +26,11 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  */
 @Entity
 @Table(name = "usuarios")
+@NamedQueries({
+        @NamedQuery(name = "Usuario.findByEmail",
+                query = "SELECT u FROM Usuario u WHERE u.email LIKE :email")
+
+})
 public class Usuario implements Serializable {
     
     @Id
@@ -35,10 +42,10 @@ public class Usuario implements Serializable {
     private String nome;    
     @Column(name = "sexo", length = 1)
     private TipoSexo sexo;
-//    @NotNull
-//    @DateTimeFormat(iso = ISO.DATE)
-//    @Column(name = "data_nascimento")
-//    private LocalDate dataNascimento;
+    @NotNull
+    @DateTimeFormat(iso = ISO.DATE)
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
     @NotBlank
     @Email
     @Column(name = "email", length = 100)
@@ -64,7 +71,7 @@ public class Usuario implements Serializable {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = nome.toUpperCase();
     }
 
       
@@ -73,7 +80,7 @@ public class Usuario implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getSenha() {
@@ -91,6 +98,16 @@ public class Usuario implements Serializable {
     public void setSexo(TipoSexo sexo) {
         this.sexo = sexo;
     }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+    
+    
 
     @Override
     public int hashCode() {
